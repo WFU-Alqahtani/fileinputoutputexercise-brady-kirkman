@@ -33,38 +33,29 @@ public class FileInputOutput {
         }
         fileWriter=new PrintWriter(outputFile);
 
-        ArrayList<String> titleList = new ArrayList<String>();
+        ArrayList<Movie> movieList = new ArrayList<>();
 
         Scanner fileReader = new Scanner(myFile);
+
         while (fileReader.hasNextLine()) {
+            Movie currentMovie = new Movie();
+
             String str = fileReader.nextLine();
             System.out.println(str);
 
             String[] arrOfStr = str.split(",");
-            titleList.add(arrOfStr[2]);
+            currentMovie.setTitle(arrOfStr[2]);
 
-            int year;
-            boolean foundYear = false;
-            for (int i=0; i<arrOfStr.length; i++) {
+            String year = currentMovie.findYear(arrOfStr);
+            currentMovie.setYear(year);
 
-                if (arrOfStr[i].length()==4) {
-                    try {
-                        year = Integer.parseInt(arrOfStr[i]);
-                        foundYear=true;
-                        fileWriter.println(year);
-                    }
-                    catch (NumberFormatException e) {
-                        //pass
-                    }
-                }
-
-                if (i == arrOfStr.length-1 && !foundYear) {
-                    fileWriter.println("N/A");
-                }
-            }
+            movieList.add(currentMovie);
         }
-        for (String item : titleList)
-            System.out.println(item);
+
+        for (Movie movie : movieList) {
+            System.out.println(movie.getTitle());
+            fileWriter.println(movie.getYear());
+        }
 
         fileWriter.close();
         fileReader.close();
