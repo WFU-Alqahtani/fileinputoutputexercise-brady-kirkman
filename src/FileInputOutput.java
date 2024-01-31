@@ -33,7 +33,7 @@ public class FileInputOutput {
         }
         fileWriter=new PrintWriter(outputFile);
 
-        ArrayList<String> arr = new ArrayList<String>();
+        ArrayList<String> titleList = new ArrayList<String>();
 
         Scanner fileReader = new Scanner(myFile);
         while (fileReader.hasNextLine()) {
@@ -41,21 +41,29 @@ public class FileInputOutput {
             System.out.println(str);
 
             String[] arrOfStr = str.split(",");
-            arr.add(arrOfStr[2]);
+            titleList.add(arrOfStr[2]);
 
-            for (String item : arrOfStr) {
-                if (item.length()==4) {
+            int year;
+            boolean foundYear = false;
+            for (int i=0; i<arrOfStr.length; i++) {
+
+                if (arrOfStr[i].length()==4) {
                     try {
-                        int year = Integer.parseInt(item);
+                        year = Integer.parseInt(arrOfStr[i]);
+                        foundYear=true;
                         fileWriter.println(year);
                     }
                     catch (NumberFormatException e) {
                         //pass
                     }
                 }
+
+                if (i == arrOfStr.length-1 && !foundYear) {
+                    fileWriter.println("N/A");
+                }
             }
         }
-        for (String item : arr)
+        for (String item : titleList)
             System.out.println(item);
 
         fileWriter.close();
